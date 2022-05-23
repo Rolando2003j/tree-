@@ -1,0 +1,213 @@
+
+
+struct Node
+{
+	int data;
+	Node* right;
+	Node* left;
+
+	Node(int d)
+	{
+		data = d;
+		right = left = NULL;
+	}
+
+};
+
+Node* root;
+void Add(int data)
+{
+	Node* new_node = new Node(data);
+
+	if (root == NULL)
+	{
+	root = new_node;
+	return;
+	}
+	Node* parent = NULL;
+	Node* temp = root;
+	while (temp != NULL)
+	{
+		parent = temp;
+		if (new_node->data > temp->data)
+		{
+			temp = temp->right;
+		}
+		else
+		{
+			temp = temp->left;
+		}
+	}
+
+	if (parent->data > new_node->data)
+	{
+		parent->left = new_node;
+	}
+	else
+	{
+		parent->right = new_node;
+	}
+
+
+}
+
+
+void search(Node* temp)
+{
+	int length = 0;
+	temp = root;
+	int s;
+	cout << " enter the element you want to search " << endl;
+	cin >> s;
+	while (temp -> data != s)
+	{
+		if (s > temp->data)
+		{
+			
+			temp = temp->right;
+			
+		}
+		else
+		{
+			temp = temp->left;
+			
+		}
+		length++;
+	}
+	cout << length << endl;
+}
+
+
+int GetMax()
+{
+
+	Node* temp = root;
+	while (temp->right != NULL)
+	{
+		temp = temp->right;
+	}
+
+	return temp->data;
+}
+
+int GetMin()
+{
+	Node* temp = root;
+	while (temp->left != NULL)
+	{
+		temp = temp->left;
+	}
+
+	return temp->data;
+}
+
+int GetHeightHelper(Node* temp)
+{
+	if (temp == NULL)
+		return -1;
+	
+	int left_SubTree = GetHeightHelper(temp->left);
+	int right_SubTree = GetHeightHelper(temp->right);
+
+	return 1 + max(left_SubTree, right_SubTree);
+}
+
+int GetHeight()
+{
+	if (root == NULL)
+	{
+		return -1;
+	}
+	else
+		return GetHeightHelper(root);
+
+
+}
+
+void IN_Order(Node* temp)
+{
+	
+	if (temp == NULL)
+		return;
+	
+	cout << temp->data << " ";
+
+	IN_Order(temp->left);
+	IN_Order(temp->right);
+
+}
+
+int main()
+{
+
+	Add(15);
+	Add(20);
+	Add(10);
+	Add(8);
+	Add(13);
+	Add(18);
+	Add(25);
+
+
+
+	int x;
+	do
+	{ 
+		cout << " \n1- to add node " << endl;
+		cout << " 2- to get max " << endl;
+		cout << " 3- to get min " << endl;
+		cout << " 4- to display In_Order " << endl;
+		cout << " 5- to search height of node " << endl;
+		cout << " -1 to exit from the programme " << endl;
+		cin >> x;
+
+		switch (x)
+		{
+		case 1:
+		{
+			int a;
+			cout << " enter the element " << endl;
+			cin >> a;
+			Add(a);
+			break;
+		}
+		case 2:
+		{
+			cout << " the max element is : " << GetMax();
+			break;
+		}
+		case 3:
+		{
+			cout << " the min element is : " << GetMin();
+			break;
+		}
+		case 4:
+		{
+			cout << " The list is : ";
+			IN_Order(root);
+		
+			break;
+		}
+		case 5:
+		{
+		search(root);
+		    break;
+		}
+
+		case -1:
+		{
+			cout << " exit " << endl;
+			break;
+		}
+
+		default :
+		{
+			cout << " Error \a" << endl;
+			break;
+		}
+
+		}
+	} while (x != -1);
+
+	return 0;
+}
